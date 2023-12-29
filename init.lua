@@ -87,8 +87,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = 's'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -252,6 +251,66 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map({ 'n', 'v' }, ']c', function()
+          if vim.wo.diff then
+            return ']c'
+          end
+          vim.schedule(function()
+            gs.next_hunk()
+          end)
+          return '<Ignore>'
+        end, { expr = true, desc = 'Jump to next hunk' })
+
+        map({ 'n', 'v' }, '[c', function()
+          if vim.wo.diff then
+            return '[c'
+          end
+          vim.schedule(function()
+            gs.prev_hunk()
+          end)
+          return '<Ignore>'
+        end, { expr = true, desc = 'Jump to previous hunk' })
+
+        -- Actions
+        -- visual mode
+        map('v', 'ghs', function()
+          gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'stage git hunk' })
+        map('v', 'ghr', function()
+          gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'reset git hunk' })
+        -- normal mode
+        map('n', 'ghs', gs.stage_hunk, { desc = 'git stage hunk' })
+        map('n', 'ghr', gs.reset_hunk, { desc = 'git reset hunk' })
+        map('n', 'ghS', gs.stage_buffer, { desc = 'git Stage buffer' })
+        map('n', 'ghu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
+        map('n', 'ghR', gs.reset_buffer, { desc = 'git Reset buffer' })
+        map('n', 'ghp', gs.preview_hunk, { desc = 'preview git hunk' })
+        map('n', 'ghb', function()
+          gs.blame_line { full = false }
+        end, { desc = 'git blame line' })
+        map('n', 'ghd', gs.diffthis, { desc = 'git diff against index' })
+        map('n', 'ghD', function()
+          gs.diffthis '~'
+        end, { desc = 'git diff against last commit' })
+
+        -- Toggles
+        map('n', 'gtb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
+        map('n', 'gtd', gs.toggle_deleted, { desc = 'toggle git show deleted' })
+
+        -- Text object
+        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'select git hunk' })
+      end,
     },
   },
 
@@ -948,6 +1007,35 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
+
+  'ludovicchabant/vim-gutentags',
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    lazy = false,
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+
+    config = function()
+      -- Remove 's' keymap
+      -- see https://github.com/nvim-tree/nvim-tree.lua/blob/50f30bcd8c62ac4a83d133d738f268279f2c2ce2/doc/nvim-tree-lua.txt#L2084
+      local function my_on_attach(bufnr)
+        local api = require "nvim-tree.api"
+
+        -- default mappings
+        api.config.mappings.default_on_attach(bufnr)
+
+        -- custom mappings
+        vim.keymap.del('n', 's', {buffer = bufnr})
+      end
+
+      require("nvim-tree").setup {
+        on_attach = my_on_attach,
+      }
+    end,
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -972,3 +1060,59 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- ==========================================
+-- = Tab settings                           =
+-- ==========================================
+-- tc 新しいタブを一番右に作る
+vim.keymap.set('n', '<c-w>c', ':tablast <bar> tabnew<CR>', { silent = true})
+vim.keymap.set('n', '<c-w><c-c>', ':tablast <bar> tabnew<CR>', { silent = true})
+
+-- tx タブを閉じる
+vim.keymap.set('n', '<c-w>x', ':tabclose<CR>', { silent = true})
+
+-- tn 次のタブ
+vim.keymap.set('n', '<c-w>n', ':tabnext<CR>', { silent = true})
+vim.keymap.set('n', '<c-w><c-n>', ':tabnext<CR>', { silent = true})
+
+-- tp 前のタブ
+vim.keymap.set('n', '<c-w>p', ':tabprevious<CR>', { silent = true})
+vim.keymap.set('n', '<c-w><c-p>', ':tabprevious<CR>', { silent = true})
+
+-- ==========================================
+-- = Window split settings                  =
+-- ==========================================
+-- Split horizontal / vertical
+vim.keymap.set('n', '<leader>s', ':split<CR><c-w>w', { silent = true})
+vim.keymap.set('n', '<leader>v', ':vsplit<CR><c-w>w', { silent = true})
+
+-- Moving window
+vim.keymap.set('n', '<leader><left>', '<c-w>h', { silent = true})
+vim.keymap.set('n', '<leader><right>', '<c-w>l', { silent = true})
+vim.keymap.set('n', '<leader><up>', '<c-w>k', { silent = true})
+vim.keymap.set('n', '<leader><down>', '<c-w>j', { silent = true})
+vim.keymap.set('n', '<leader>h', '<c-w>h', { silent = true})
+vim.keymap.set('n', '<leader>l', '<c-w>l', { silent = true})
+vim.keymap.set('n', '<leader>k', '<c-w>k', { silent = true})
+vim.keymap.set('n', '<leader>j', '<c-w>j', { silent = true})
+
+-- Resizing window
+vim.keymap.set('n', '<c-w><left>', '<c-w><', { silent = true})
+vim.keymap.set('n', '<c-w><right>', '<c-w>>', { silent = true})
+vim.keymap.set('n', '<c-w><up>', '<c-w>+', { silent = true})
+vim.keymap.set('n', '<c-w><down>', '<c-w>-', { silent = true})
+
+-- ==========================================
+-- = Settings for ctags                     =
+-- ==========================================
+vim.g.tags = './tags' -- カレントディレクトリから上位に向かってctagsファイルを探して最初に見つけた物を読み込む
+vim.keymap.set('n', '<c-]><c-]>', 'g<c-]>', { silent = true, noremap = true})
+vim.keymap.set('n', '<c-c>', ':tag<CR>', { silent = true, noremap = true})
+vim.keymap.set('n', '<c-]>v', ':vsp <CR><c-w>l g<c-]>', { silent = true, noremap = true})
+vim.keymap.set('n', '<c-]>h', ':sp <CR><c-w>l g<c-]>', { silent = true, noremap = true})
+vim.keymap.set('n', '<c-]>t', ':<c-u>tab stj <c-R>=expand("<cword>")<CR><CR>', { silent = true, noremap = true})
+
+-- ==========================================
+-- = NvimTree                               =
+-- ==========================================
+vim.keymap.set('n', '<leader>f', ':NvimTreeToggle<CR>', { silent = true})
