@@ -1029,6 +1029,7 @@ require('lazy').setup({
 
         -- custom mappings
         vim.keymap.del('n', 's', {buffer = bufnr})
+        vim.keymap.del('n', '<c-e>', {buffer = bufnr})
       end
 
       require("nvim-tree").setup {
