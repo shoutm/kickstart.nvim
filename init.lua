@@ -1061,6 +1061,12 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+
+vim.o.expandtab = true          -- タブの代わりにスペースを利用
+vim.o.tabstop = 2               -- ファイル中のタブ文字をスペース何個分で表示するか
+vim.o.shiftwidth = 2            -- 自動挿入されるタブ文字を何文字にするか
+vim.o.softtabstop = 2           -- タブキーを押した際に何文字スペースを入力するか
+
 -- ==========================================
 -- = Tab settings                           =
 -- ==========================================
