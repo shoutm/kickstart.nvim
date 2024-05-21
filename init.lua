@@ -1037,6 +1037,16 @@ require('lazy').setup({
       }
     end,
   },
+
+  
+  {
+    'liuchengxu/vista.vim',
+
+    config = function()
+      vim.g.vista_echo_cursor = 1
+      vim.g.vista_sidebar_width = 40
+    end
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1123,3 +1133,9 @@ vim.keymap.set('n', '<c-]>t', ':<c-u>tab stj <c-R>=expand("<cword>")<CR><CR>', {
 -- = NvimTree                               =
 -- ==========================================
 vim.keymap.set('n', '<leader>f', ':NvimTreeToggle<CR>', { silent = true})
+
+
+-- ==========================================
+-- = Vista                                  =
+-- ==========================================
+vim.keymap.set('n', '<TAB>', ':Vista!!<CR>', { silent = true})
