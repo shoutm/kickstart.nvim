@@ -90,7 +90,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = 's'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -1011,41 +1011,40 @@ require('lazy').setup({
   'ludovicchabant/vim-gutentags',
 
   {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
     lazy = false,
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
+      'nvim-tree/nvim-web-devicons',
     },
 
     config = function()
       -- Remove 's' keymap
       -- see https://github.com/nvim-tree/nvim-tree.lua/blob/50f30bcd8c62ac4a83d133d738f268279f2c2ce2/doc/nvim-tree-lua.txt#L2084
       local function my_on_attach(bufnr)
-        local api = require "nvim-tree.api"
+        local api = require 'nvim-tree.api'
 
         -- default mappings
         api.config.mappings.default_on_attach(bufnr)
 
         -- custom mappings
-        vim.keymap.del('n', 's', {buffer = bufnr})
-        vim.keymap.del('n', '<c-e>', {buffer = bufnr})
+        vim.keymap.del('n', 's', { buffer = bufnr })
+        vim.keymap.del('n', '<c-e>', { buffer = bufnr })
       end
 
-      require("nvim-tree").setup {
+      require('nvim-tree').setup {
         on_attach = my_on_attach,
       }
     end,
   },
 
-  
   {
     'liuchengxu/vista.vim',
 
     config = function()
       vim.g.vista_echo_cursor = 1
       vim.g.vista_sidebar_width = 40
-    end
+    end,
   },
 }, {
   ui = {
@@ -1072,70 +1071,68 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-
-vim.o.expandtab = true          -- タブの代わりにスペースを利用
-vim.o.tabstop = 2               -- ファイル中のタブ文字をスペース何個分で表示するか
-vim.o.shiftwidth = 2            -- 自動挿入されるタブ文字を何文字にするか
-vim.o.softtabstop = 2           -- タブキーを押した際に何文字スペースを入力するか
+vim.o.expandtab = true -- タブの代わりにスペースを利用
+vim.o.tabstop = 2 -- ファイル中のタブ文字をスペース何個分で表示するか
+vim.o.shiftwidth = 2 -- 自動挿入されるタブ文字を何文字にするか
+vim.o.softtabstop = 2 -- タブキーを押した際に何文字スペースを入力するか
 
 -- ==========================================
 -- = Tab settings                           =
 -- ==========================================
 -- tc 新しいタブを一番右に作る
-vim.keymap.set('n', '<c-w>c', ':tablast <bar> tabnew<CR>', { silent = true})
-vim.keymap.set('n', '<c-w><c-c>', ':tablast <bar> tabnew<CR>', { silent = true})
+vim.keymap.set('n', '<c-w>c', ':tablast <bar> tabnew<CR>', { silent = true })
+vim.keymap.set('n', '<c-w><c-c>', ':tablast <bar> tabnew<CR>', { silent = true })
 
 -- tx タブを閉じる
-vim.keymap.set('n', '<c-w>x', ':tabclose<CR>', { silent = true})
+vim.keymap.set('n', '<c-w>x', ':tabclose<CR>', { silent = true })
 
 -- tn 次のタブ
-vim.keymap.set('n', '<c-w>n', ':tabnext<CR>', { silent = true})
-vim.keymap.set('n', '<c-w><c-n>', ':tabnext<CR>', { silent = true})
+vim.keymap.set('n', '<c-w>n', ':tabnext<CR>', { silent = true })
+vim.keymap.set('n', '<c-w><c-n>', ':tabnext<CR>', { silent = true })
 
 -- tp 前のタブ
-vim.keymap.set('n', '<c-w>p', ':tabprevious<CR>', { silent = true})
-vim.keymap.set('n', '<c-w><c-p>', ':tabprevious<CR>', { silent = true})
+vim.keymap.set('n', '<c-w>p', ':tabprevious<CR>', { silent = true })
+vim.keymap.set('n', '<c-w><c-p>', ':tabprevious<CR>', { silent = true })
 
 -- ==========================================
 -- = Window split settings                  =
 -- ==========================================
 -- Split horizontal / vertical
-vim.keymap.set('n', '<leader>s', ':split<CR><c-w>w', { silent = true})
-vim.keymap.set('n', '<leader>v', ':vsplit<CR><c-w>w', { silent = true})
+vim.keymap.set('n', '<leader>s', ':split<CR><c-w>w', { silent = true })
+vim.keymap.set('n', '<leader>v', ':vsplit<CR><c-w>w', { silent = true })
 
 -- Moving window
-vim.keymap.set('n', '<leader><left>', '<c-w>h', { silent = true})
-vim.keymap.set('n', '<leader><right>', '<c-w>l', { silent = true})
-vim.keymap.set('n', '<leader><up>', '<c-w>k', { silent = true})
-vim.keymap.set('n', '<leader><down>', '<c-w>j', { silent = true})
-vim.keymap.set('n', '<leader>h', '<c-w>h', { silent = true})
-vim.keymap.set('n', '<leader>l', '<c-w>l', { silent = true})
-vim.keymap.set('n', '<leader>k', '<c-w>k', { silent = true})
-vim.keymap.set('n', '<leader>j', '<c-w>j', { silent = true})
+vim.keymap.set('n', '<leader><left>', '<c-w>h', { silent = true })
+vim.keymap.set('n', '<leader><right>', '<c-w>l', { silent = true })
+vim.keymap.set('n', '<leader><up>', '<c-w>k', { silent = true })
+vim.keymap.set('n', '<leader><down>', '<c-w>j', { silent = true })
+vim.keymap.set('n', '<leader>h', '<c-w>h', { silent = true })
+vim.keymap.set('n', '<leader>l', '<c-w>l', { silent = true })
+vim.keymap.set('n', '<leader>k', '<c-w>k', { silent = true })
+vim.keymap.set('n', '<leader>j', '<c-w>j', { silent = true })
 
 -- Resizing window
-vim.keymap.set('n', '<c-w><left>', '<c-w><', { silent = true})
-vim.keymap.set('n', '<c-w><right>', '<c-w>>', { silent = true})
-vim.keymap.set('n', '<c-w><up>', '<c-w>+', { silent = true})
-vim.keymap.set('n', '<c-w><down>', '<c-w>-', { silent = true})
+vim.keymap.set('n', '<c-w><left>', '<c-w><', { silent = true })
+vim.keymap.set('n', '<c-w><right>', '<c-w>>', { silent = true })
+vim.keymap.set('n', '<c-w><up>', '<c-w>+', { silent = true })
+vim.keymap.set('n', '<c-w><down>', '<c-w>-', { silent = true })
 
 -- ==========================================
 -- = Settings for ctags                     =
 -- ==========================================
 vim.g.tags = './tags' -- カレントディレクトリから上位に向かってctagsファイルを探して最初に見つけた物を読み込む
-vim.keymap.set('n', '<c-]><c-]>', 'g<c-]>', { silent = true, noremap = true})
-vim.keymap.set('n', '<c-c>', ':tag<CR>', { silent = true, noremap = true})
-vim.keymap.set('n', '<c-]>v', ':vsp <CR><c-w>l g<c-]>', { silent = true, noremap = true})
-vim.keymap.set('n', '<c-]>h', ':sp <CR><c-w>l g<c-]>', { silent = true, noremap = true})
-vim.keymap.set('n', '<c-]>t', ':<c-u>tab stj <c-R>=expand("<cword>")<CR><CR>', { silent = true, noremap = true})
+vim.keymap.set('n', '<c-]><c-]>', 'g<c-]>', { silent = true, noremap = true })
+vim.keymap.set('n', '<c-c>', ':tag<CR>', { silent = true, noremap = true })
+vim.keymap.set('n', '<c-]>v', ':vsp <CR><c-w>l g<c-]>', { silent = true, noremap = true })
+vim.keymap.set('n', '<c-]>h', ':sp <CR><c-w>l g<c-]>', { silent = true, noremap = true })
+vim.keymap.set('n', '<c-]>t', ':<c-u>tab stj <c-R>=expand("<cword>")<CR><CR>', { silent = true, noremap = true })
 
 -- ==========================================
 -- = NvimTree                               =
 -- ==========================================
-vim.keymap.set('n', '<leader>f', ':NvimTreeToggle<CR>', { silent = true})
-
+vim.keymap.set('n', '<leader>f', ':NvimTreeToggle<CR>', { silent = true })
 
 -- ==========================================
 -- = Vista                                  =
 -- ==========================================
-vim.keymap.set('n', '<TAB>', ':Vista!!<CR>', { silent = true})
+vim.keymap.set('n', '<TAB>', ':Vista!!<CR>', { silent = true })
