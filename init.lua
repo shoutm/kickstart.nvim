@@ -1130,7 +1130,7 @@ vim.keymap.set('n', '<c-]>t', ':<c-u>tab stj <c-R>=expand("<cword>")<CR><CR>', {
 -- ==========================================
 -- = NvimTree                               =
 -- ==========================================
-vim.keymap.set('n', '<leader>f', ':NvimTreeToggle<CR>', { silent = true })
+vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<CR>', { silent = true })
 
 -- ==========================================
 -- = Vista                                  =
