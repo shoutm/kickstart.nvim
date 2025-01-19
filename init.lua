@@ -1046,6 +1046,9 @@ require('lazy').setup({
       vim.g.vista_sidebar_width = 40
     end,
   },
+
+  'tpope/vim-rails',
+  'neoclide/coc.nvim',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
